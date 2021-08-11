@@ -8,7 +8,12 @@ import (
 )
 
 type Config struct {
-	MySql MysqlConfig `mapstructure:"mysql"`
+	Service ServiceConfig `mapstructure:"service"`
+	MySql   MysqlConfig   `mapstructure:"mysql"`
+}
+
+type ServiceConfig struct {
+	Port int
 }
 
 type MysqlConfig struct {
@@ -41,6 +46,6 @@ func init() {
 func parseConfig() {
 	err := viper.Unmarshal(&AppConfig)
 	if err != nil {
-		panic(fmt.Errorf("Fatal error read config file: %s \n", err))
+		panic(fmt.Errorf("Fatal error parse config file: %s \n", err))
 	}
 }
