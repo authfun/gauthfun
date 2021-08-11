@@ -1,0 +1,6 @@
+[mysql]
+user = "root"
+password = "123456"
+host = "10.0.0.41"
+port = 3306
+db_name = "authfun"
