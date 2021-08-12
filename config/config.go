@@ -17,11 +17,12 @@ type ServiceConfig struct {
 }
 
 type MysqlConfig struct {
-	User     string
-	Password string
-	Host     string
-	Port     int
-	DbName   string
+	User       string `mapstructure:"user"`
+	Password   string `mapstructure:"password"`
+	Host       string `mapstructure:"host"`
+	Port       int    `mapstructure:"port"`
+	DbName     string `mapstructure:"db_name"`
+	Parameters string `mapstructure:"parameters"`
 }
 
 var AppConfig Config
