@@ -89,3 +89,64 @@ go run main.go
   `g, org, role, *` # all domains
   
   `g, org, role, dom` # specific domain
+
+- Permission chain
+
+  - A user has a role, the role has a feature, the feature holds an obj, then the user could access the obj.
+  
+  ```
+  # cross domain
+  p, feature, *, menu, *
+  p, feature, *, /api/items, GET
+  g, role, feature, *
+  g, user, role, *
+  
+  user, dom, menu, * -> true
+  user, dom, /api/items, GET -> true  
+  user, *, menu, * -> true
+  user, *, /api/items, GET -> true  
+
+  # specific domain
+  p, feature, dom, menu, *
+  p, feature, dom, /api/items, GET
+  g, role, feature, dom
+  g, user, role, dom
+  
+  user, dom, menu, * -> true
+  user, dom, /api/items, GET -> true  
+  user, *, menu, * -> false
+  user, *, /api/items, GET -> false
+  user, dom1, menu, * -> false
+  user, dom1, /api/items, GET -> false
+  ```
+  
+  - A user in an organization, the organization binds a role, the role has a feature, the feature holds an obj, then the user could access the obj.
+  
+  ```
+  # cross domain
+  p, feature, *, menu, *
+  p, feature, *, /api/items, GET
+  g, role, feature, *
+  g, org, role, *
+  g, user, org, *
+  
+  user, dom, menu, * -> true
+  user, dom, /api/items, GET -> true  
+  user, *, menu, * -> true
+  user, *, /api/items, GET -> true  
+  
+  # specific domain
+  p, feature, dom, menu, *
+  p, feature, dom, /api/items, GET
+  g, role, feature, dom
+  g, org, role, dom
+  g, user, org, dom  
+    
+  user, dom, menu, * -> true
+  user, dom, /api/items, GET -> true  
+  user, *, menu, * -> false
+  user, *, /api/items, GET -> false
+  user, dom1, menu, * -> false
+  user, dom1, /api/items, GET -> false
+  ```
+  
