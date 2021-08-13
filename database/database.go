@@ -31,7 +31,7 @@ func init() {
 	}), &gorm.Config{})
 
 	if err != nil {
-		panic(fmt.Errorf("Fatal error open mysql connection of auth database: %s \n", err))
+		panic(fmt.Errorf("fatal error open mysql connection of auth database: %s", err))
 	}
 
 	AuthDatabase = db
