@@ -1,0 +1,28 @@
+definitions:
+  schema.Tenant:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/tenants/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schema.Tenant'
+            type: array
+      summary: Get tenant list
+      tags:
+      - Tenant
+swagger: "2.0"

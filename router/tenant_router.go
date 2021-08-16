@@ -18,6 +18,12 @@ func AddGroupTenant(router *gin.Engine) {
 	}
 }
 
+// @Summary Get tenant list
+// @Tags Tenant
+// @Accept json
+// @Produce json
+// @Success 200 {array} schema.Tenant
+// @Router /api/tenants/ [get]
 func tenantList(c *gin.Context) {
 	var tenants []schema.Tenant
 	db := database.AuthDatabase
