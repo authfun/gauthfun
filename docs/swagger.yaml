@@ -1,4 +1,16 @@
 definitions:
+  model.Option:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  model.TenantForm:
+    properties:
+      name:
+        type: string
+    type: object
   schema.Tenant:
     properties:
       id:
@@ -9,6 +21,27 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/tenants:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Tenant info
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/model.TenantForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schema.Tenant'
+      summary: Add tenant
+      tags:
+      - Tenant
   /api/tenants/:
     get:
       consumes:
@@ -23,6 +56,82 @@ paths:
               $ref: '#/definitions/schema.Tenant'
             type: array
       summary: Get tenant list
+      tags:
+      - Tenant
+  /api/tenants/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Tenant Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+      summary: Delete tenant
+      tags:
+      - Tenant
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Tenant Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Tenant'
+      summary: Get tenant
+      tags:
+      - Tenant
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Tenant Id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Tenant info
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/model.TenantForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Update tenant
+      tags:
+      - Tenant
+  /api/tenants/options:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Option'
+            type: array
+      summary: Get tenant option
       tags:
       - Tenant
 swagger: "2.0"
