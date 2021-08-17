@@ -48,6 +48,31 @@ var doc = `{
                 }
             }
         },
+        "/api/features/options": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Feature"
+                ],
+                "summary": "Get feature option",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Option"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/menus": {
             "post": {
                 "consumes": [
