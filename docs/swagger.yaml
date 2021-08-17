@@ -16,6 +16,13 @@ definitions:
       name:
         type: string
     type: object
+  schema.Feature:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   schema.Menu:
     properties:
       id:
@@ -33,6 +40,22 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/features/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schema.Feature'
+            type: array
+      summary: Get feature list
+      tags:
+      - Feature
   /api/menus:
     post:
       consumes:
