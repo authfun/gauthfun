@@ -2,6 +2,8 @@ package database
 
 import (
 	"fmt"
+	"io/ioutil"
+	"strings"
 
 	"github.com/authfun/gauthfun/config"
 	"gorm.io/driver/mysql"
@@ -34,5 +36,29 @@ func init() {
 		panic(fmt.Errorf("fatal error open mysql connection of auth database: %s", err))
 	}
 
+	initDb(db)
 	AuthDatabase = db
+}
+
+func initDb(db *gorm.DB) {
+	sqlDB, err := db.DB()
+	if err != nil {
+		panic(err)
+	}
+
+	bytes, err := ioutil.ReadFile("./data/init.sql")
+	if err != nil {
+		panic(err)
+	}
+
+	scripts := strings.Split(string(bytes), ";")
+	for _, script := range scripts {
+		if len(script) <= 0 {
+			continue
+		}
+		_, err := sqlDB.Exec(script)
+		if err != nil {
+			panic(err)
+		}
+	}
 }
