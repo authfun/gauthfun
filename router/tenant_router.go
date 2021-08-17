@@ -34,8 +34,7 @@ func AddGroupTenant(router *gin.Engine) {
 // @Router /api/tenants/ [get]
 func tenantList(c *gin.Context) {
 	var tenants []schema.Tenant
-	db := database.AuthDatabase
-	result := db.Find(&tenants)
+	result := database.AuthDatabase.Find(&tenants)
 	if result.Error != nil && errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		InternalServerError(c, result.Error)
 		return
@@ -51,8 +50,7 @@ func tenantList(c *gin.Context) {
 // @Router /api/tenants/options [get]
 func tenantOptions(c *gin.Context) {
 	var tenants []schema.Tenant
-	db := database.AuthDatabase
-	result := db.Find(&tenants)
+	result := database.AuthDatabase.Find(&tenants)
 	if result.Error != nil && errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		InternalServerError(c, result.Error)
 		return

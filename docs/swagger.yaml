@@ -1,4 +1,9 @@
 definitions:
+  model.MenuForm:
+    properties:
+      name:
+        type: string
+    type: object
   model.Option:
     properties:
       id:
@@ -8,6 +13,13 @@ definitions:
     type: object
   model.TenantForm:
     properties:
+      name:
+        type: string
+    type: object
+  schema.Menu:
+    properties:
+      id:
+        type: string
       name:
         type: string
     type: object
@@ -21,6 +33,119 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/menus:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Menu info
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/model.MenuForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schema.Menu'
+      summary: Add menu
+      tags:
+      - Menu
+  /api/menus/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schema.Menu'
+            type: array
+      summary: Get menu list
+      tags:
+      - Menu
+  /api/menus/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Menu Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+      summary: Delete menu
+      tags:
+      - Menu
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Menu Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Menu'
+      summary: Get menu
+      tags:
+      - Menu
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Menu Id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Menu info
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/model.MenuForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Update menu
+      tags:
+      - Menu
+  /api/menus/options:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Option'
+            type: array
+      summary: Get menu option
+      tags:
+      - Menu
   /api/tenants:
     post:
       consumes:
