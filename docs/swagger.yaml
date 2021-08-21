@@ -1,4 +1,15 @@
 definitions:
+  model.ApiForm:
+    properties:
+      group:
+        type: string
+      method:
+        type: string
+      name:
+        type: string
+      route:
+        type: string
+    type: object
   model.MenuForm:
     properties:
       name:
@@ -14,6 +25,19 @@ definitions:
   model.TenantForm:
     properties:
       name:
+        type: string
+    type: object
+  schema.Api:
+    properties:
+      group:
+        type: string
+      id:
+        type: string
+      method:
+        type: string
+      name:
+        type: string
+      route:
         type: string
     type: object
   schema.Feature:
@@ -40,6 +64,103 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/apis:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Api info
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/model.ApiForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schema.Api'
+      summary: Add api
+      tags:
+      - Api
+  /api/apis/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/schema.Api'
+            type: array
+      summary: Get api list
+      tags:
+      - Api
+  /api/apis/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Api Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+      summary: Delete api
+      tags:
+      - Api
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Api Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Api'
+      summary: Get api
+      tags:
+      - Api
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Api Id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Api info
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/model.ApiForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Update api
+      tags:
+      - Api
   /api/features/:
     get:
       consumes:

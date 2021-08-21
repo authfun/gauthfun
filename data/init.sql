@@ -22,6 +22,18 @@ DEFAULT CHARACTER SET=utf8;
 INSERT INTO `menu` (`id`,`name`) VALUES ('d85c19d9-8d0a-4f20-84f6-ec9d1449182d', 'EC2');
 INSERT INTO `menu` (`id`,`name`) VALUES ('50ea4deb-4333-49e7-8d94-ee92818e2ce3', 'S3');
 
+-- Api
+DROP TABLE IF EXISTS `api`;
+CREATE TABLE `api` (
+	`id` varchar(50) NOT NULL,
+	`name` varchar(50) NULL,
+	`group` varchar(50) NULL,
+	`Method` varchar(10) NULL,
+	`Route` varchar(10) NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8;
+
 -- 功能
 DROP TABLE IF EXISTS `feature`;
 CREATE TABLE `feature` (

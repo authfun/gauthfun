@@ -17,6 +17,7 @@ func NewRouter() *gin.Engine {
 
 	AddGroupTenant(router)
 	AddGroupMenu(router)
+	AddGroupApi(router)
 	AddGroupFeature(router)
 	AddGroupPermission(router)
 

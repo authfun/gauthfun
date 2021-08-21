@@ -4,6 +4,156 @@
         "contact": {}
     },
     "paths": {
+        "/api/apis": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Api"
+                ],
+                "summary": "Add api",
+                "parameters": [
+                    {
+                        "description": "Api info",
+                        "name": "account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ApiForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/schema.Api"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/apis/": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Api"
+                ],
+                "summary": "Get api list",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/schema.Api"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/apis/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Api"
+                ],
+                "summary": "Get api",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Api Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.Api"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Api"
+                ],
+                "summary": "Update api",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Api Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Api info",
+                        "name": "account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ApiForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Api"
+                ],
+                "summary": "Delete api",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Api Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/features/": {
             "get": {
                 "consumes": [
@@ -406,6 +556,23 @@
         }
     },
     "definitions": {
+        "model.ApiForm": {
+            "type": "object",
+            "properties": {
+                "group": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "route": {
+                    "type": "string"
+                }
+            }
+        },
         "model.MenuForm": {
             "type": "object",
             "properties": {
@@ -429,6 +596,26 @@
             "type": "object",
             "properties": {
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "schema.Api": {
+            "type": "object",
+            "properties": {
+                "group": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "route": {
                     "type": "string"
                 }
             }
