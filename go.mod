@@ -3,6 +3,7 @@ module github.com/authfun/gauthfun
 go 1.16
 
 require (
+	github.com/ahmetb/go-linq/v3 v3.2.0
 	github.com/casbin/casbin/v2 v2.35.1
 	github.com/casbin/gorm-adapter/v3 v3.3.3
 	github.com/fsnotify/fsnotify v1.4.9

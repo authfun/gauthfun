@@ -22,6 +22,19 @@ definitions:
       name:
         type: string
     type: object
+  model.OrganizationNode:
+    properties:
+      children:
+        items:
+          $ref: '#/definitions/model.OrganizationNode'
+        type: array
+      id:
+        type: string
+      name:
+        type: string
+      parentId:
+        type: string
+    type: object
   model.TenantForm:
     properties:
       name:
@@ -306,6 +319,28 @@ paths:
       summary: Get menu option
       tags:
       - Menu
+  /api/organizations/tree:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Tenant ID
+        in: query
+        name: tenantId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.OrganizationNode'
+            type: array
+      summary: Get organization tree
+      tags:
+      - Organization
   /api/tenants:
     post:
       consumes:

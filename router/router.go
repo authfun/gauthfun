@@ -18,8 +18,11 @@ func NewRouter() *gin.Engine {
 	AddGroupTenant(router)
 	AddGroupMenu(router)
 	AddGroupApi(router)
+	AddGroupOrganization(router)
 	AddGroupFeature(router)
 	AddGroupPermission(router)
+
+	AddGroupMock(router)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return router
