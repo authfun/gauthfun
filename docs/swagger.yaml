@@ -22,6 +22,25 @@ definitions:
       name:
         type: string
     type: object
+  model.OrganizationDetail:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      parentId:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/schema.Role'
+        type: array
+      tenantId:
+        type: string
+      users:
+        items:
+          $ref: '#/definitions/schema.User'
+        type: array
+    type: object
   model.OrganizationNode:
     properties:
       children:
@@ -67,7 +86,21 @@ definitions:
       name:
         type: string
     type: object
+  schema.Role:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   schema.Tenant:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  schema.User:
     properties:
       id:
         type: string
@@ -319,6 +352,26 @@ paths:
       summary: Get menu option
       tags:
       - Menu
+  /api/organizations/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Organization ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.OrganizationDetail'
+      summary: Get organization
+      tags:
+      - Organization
   /api/organizations/tree:
     get:
       consumes:

@@ -432,6 +432,37 @@ var doc = `{
                 }
             }
         },
+        "/api/organizations/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Organization"
+                ],
+                "summary": "Get organization",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Organization ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.OrganizationDetail"
+                        }
+                    }
+                }
+            }
+        },
         "/api/tenants": {
             "post": {
                 "consumes": [
@@ -645,6 +676,35 @@ var doc = `{
                 }
             }
         },
+        "model.OrganizationDetail": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parentId": {
+                    "type": "string"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schema.Role"
+                    }
+                },
+                "tenantId": {
+                    "type": "string"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schema.User"
+                    }
+                }
+            }
+        },
         "model.OrganizationNode": {
             "type": "object",
             "properties": {
@@ -715,7 +775,29 @@ var doc = `{
                 }
             }
         },
+        "schema.Role": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "schema.Tenant": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "schema.User": {
             "type": "object",
             "properties": {
                 "id": {
