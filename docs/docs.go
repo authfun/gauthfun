@@ -223,6 +223,43 @@ var doc = `{
                 }
             }
         },
+        "/api/features/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Feature"
+                ],
+                "summary": "Get feature by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Feature ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Whether to get the implicit info",
+                        "name": "implicit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.FeatureDetail"
+                        }
+                    }
+                }
+            }
+        },
         "/api/menus": {
             "post": {
                 "consumes": [
@@ -653,6 +690,32 @@ var doc = `{
                     "type": "string"
                 },
                 "route": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.FeatureDetail": {
+            "type": "object",
+            "properties": {
+                "apis": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schema.Api"
+                    }
+                },
+                "features": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schema.Feature"
+                    }
+                },
+                "menus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/schema.Menu"
+                    }
+                },
+                "name": {
                     "type": "string"
                 }
             }

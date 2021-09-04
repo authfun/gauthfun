@@ -10,6 +10,23 @@ definitions:
       route:
         type: string
     type: object
+  model.FeatureDetail:
+    properties:
+      apis:
+        items:
+          $ref: '#/definitions/schema.Api'
+        type: array
+      features:
+        items:
+          $ref: '#/definitions/schema.Feature'
+        type: array
+      menus:
+        items:
+          $ref: '#/definitions/schema.Menu'
+        type: array
+      name:
+        type: string
+    type: object
   model.MenuForm:
     properties:
       name:
@@ -221,6 +238,30 @@ paths:
               $ref: '#/definitions/schema.Feature'
             type: array
       summary: Get feature list
+      tags:
+      - Feature
+  /api/features/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Feature ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Whether to get the implicit info
+        in: query
+        name: implicit
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.FeatureDetail'
+      summary: Get feature by id
       tags:
       - Feature
   /api/features/options:

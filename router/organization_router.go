@@ -3,8 +3,6 @@ package router
 import (
 	"errors"
 	"net/http"
-	"strconv"
-	"strings"
 
 	"sort"
 
@@ -57,23 +55,17 @@ func getOrganization(c *gin.Context) {
 
 	copier.Copy(&detail, &organization)
 
-	users, err := service.GetUsersForOrganization(id, organization.TenantId)
-	if err != nil && !errors.Is(err, rbac_errors.ERR_NAME_NOT_FOUND) {
+	userIdChan, userIdErr := getUsersForOrganization(id, organization.TenantId)
+	if err, existed := <-userIdErr; existed && !errors.Is(err, rbac_errors.ERR_NAME_NOT_FOUND) {
 		InternalServerError(c, err)
 		return
 	}
 
-	roles, err := service.GetRolesForOrganization(id, organization.TenantId)
-	if err != nil && !errors.Is(err, rbac_errors.ERR_NAME_NOT_FOUND) {
+	roleIdChan, roleIdErr := getRolesForOrganization(id, organization.TenantId)
+	if err, existed := <-roleIdErr; existed && !errors.Is(err, rbac_errors.ERR_NAME_NOT_FOUND) {
 		InternalServerError(c, err)
 		return
 	}
-
-	userIdChan := make(chan []int64)
-	roleIdChan := make(chan []int64)
-
-	go getUserIds(users, userIdChan)
-	go getRoleIds(roles, roleIdChan)
 
 	userIds, roleIds := <-userIdChan, <-roleIdChan
 
@@ -153,24 +145,42 @@ func buildTree(nodes []*model.OrganizationNode) []model.OrganizationNode {
 	return tree
 }
 
-func getUserIds(users []string, userIdChan chan []int64) {
-	var ids []int64
-	linq.From(users).SelectT(func(user string) int64 {
-		s := strings.ReplaceAll(user, consts.UserPrefix, "")
-		userId, _ := strconv.ParseInt(s, 10, 64)
-		return userId
-	}).ToSlice(&ids)
+func getUsersForOrganization(organizationId string, tenantId string) (<-chan []string, <-chan error) {
+	userIdChan := make(chan []string, 1)
+	errChan := make(chan error, 1)
 
-	userIdChan <- ids
+	go func() {
+		users, err := service.GetUsersForOrganization(organizationId, tenantId)
+		if err != nil {
+			errChan <- err
+		} else {
+			userIds := service.GetIds(users, consts.UserPrefix)
+			userIdChan <- userIds
+		}
+
+		close(userIdChan)
+		close(errChan)
+	}()
+
+	return userIdChan, errChan
 }
 
-func getRoleIds(roles []string, roleIdChan chan []int64) {
-	var ids []int64
-	linq.From(roles).SelectT(func(role string) int64 {
-		s := strings.ReplaceAll(role, consts.RolePrefix, "")
-		roleId, _ := strconv.ParseInt(s, 10, 64)
-		return roleId
-	}).ToSlice(&ids)
+func getRolesForOrganization(organizationId string, tenantId string) (<-chan []string, <-chan error) {
+	roleIdChan := make(chan []string, 1)
+	errChan := make(chan error, 1)
 
-	roleIdChan <- ids
+	go func() {
+		roles, err := service.GetRolesForOrganization(organizationId, tenantId)
+		if err != nil {
+			errChan <- err
+		} else {
+			roleIds := service.GetIds(roles, consts.RolePrefix)
+			roleIdChan <- roleIds
+		}
+
+		close(roleIdChan)
+		close(errChan)
+	}()
+
+	return roleIdChan, errChan
 }
