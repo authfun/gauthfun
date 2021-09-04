@@ -2,7 +2,6 @@ package router
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -10,11 +9,11 @@ import (
 	"sort"
 
 	linq "github.com/ahmetb/go-linq/v3"
-	"github.com/authfun/gauthfun/casbin"
 	"github.com/authfun/gauthfun/consts"
 	"github.com/authfun/gauthfun/database"
 	"github.com/authfun/gauthfun/model"
 	"github.com/authfun/gauthfun/schema"
+	service "github.com/authfun/gauthfun/service"
 	rbac_errors "github.com/casbin/casbin/v2/errors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
@@ -58,16 +57,13 @@ func getOrganization(c *gin.Context) {
 
 	copier.Copy(&detail, &organization)
 
-	name := consts.OrganizationPrefix + fmt.Sprintf("%v", id)
-	domain := consts.TenantPrefix + fmt.Sprintf("%v", organization.TenantId)
-
-	users, err := casbin.Enforcer.GetUsersForRole(name, domain)
+	users, err := service.GetUsersForOrganization(id, organization.TenantId)
 	if err != nil && !errors.Is(err, rbac_errors.ERR_NAME_NOT_FOUND) {
 		InternalServerError(c, err)
 		return
 	}
 
-	roles, err := casbin.Enforcer.GetRolesForUser(name, domain)
+	roles, err := service.GetRolesForOrganization(id, organization.TenantId)
 	if err != nil && !errors.Is(err, rbac_errors.ERR_NAME_NOT_FOUND) {
 		InternalServerError(c, err)
 		return
@@ -80,6 +76,7 @@ func getOrganization(c *gin.Context) {
 	go getRoleIds(roles, roleIdChan)
 
 	userIds, roleIds := <-userIdChan, <-roleIdChan
+
 	if len(userIds) > 0 {
 		database.AuthDatabase.Find(&detail.Users, userIds)
 	}
