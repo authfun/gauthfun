@@ -154,6 +154,39 @@
                 }
             }
         },
+        "/api/features": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Feature"
+                ],
+                "summary": "Add feature",
+                "parameters": [
+                    {
+                        "description": "Feature info",
+                        "name": "account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.FeatureForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/schema.Feature"
+                        }
+                    }
+                }
+            }
+        },
         "/api/features/": {
             "get": {
                 "consumes": [
@@ -694,6 +727,32 @@
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/schema.Menu"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.FeatureForm": {
+            "type": "object",
+            "properties": {
+                "apiIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "featureIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "menuIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
                     }
                 },
                 "name": {

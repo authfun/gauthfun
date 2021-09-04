@@ -27,6 +27,23 @@ definitions:
       name:
         type: string
     type: object
+  model.FeatureForm:
+    properties:
+      apiIds:
+        items:
+          type: string
+        type: array
+      featureIds:
+        items:
+          type: string
+        type: array
+      menuIds:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+    type: object
   model.MenuForm:
     properties:
       name:
@@ -224,6 +241,27 @@ paths:
       summary: Update api
       tags:
       - Api
+  /api/features:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Feature info
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/model.FeatureForm'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/schema.Feature'
+      summary: Add feature
+      tags:
+      - Feature
   /api/features/:
     get:
       consumes:
